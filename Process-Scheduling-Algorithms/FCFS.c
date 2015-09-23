@@ -15,11 +15,11 @@
 
 typedef struct fcfs
 {
-    int process;
-    int burst;
-    int arrival;
-    int tat;
-    int wt;
+    int process;    //Process Number
+    int burst;      //Burst Time
+    int arrival;    //Arrival Time
+    int tat;        //Turn Around Time
+    int wt;         //Waiting Time
 }fcfs;
 
 int sort(fcfs [], int);
@@ -30,7 +30,7 @@ int main()
 
     printf ("Enter the number of processes: ");
     scanf ("%d", &n);
-    fcfs arr[n];
+    fcfs arr[n];    //Array of type fcfs
     int tct[n];
 
     for (i = 0; i < n; i++)
@@ -42,6 +42,8 @@ int main()
         printf ("Enter the arrival time: ");
         scanf ("%d", &(arr[i].arrival));
     }
+    
+    //Sorting the processes according to their arrival time
     sort(arr, n);
 
     printf ("Process\t\tBurst Time\tArrival Time\tTurn Around Time\tWaiting Time\n");
@@ -61,6 +63,7 @@ int main()
     return 0;
 }
 
+//Bubble Sort
 int sort(fcfs arr[], int n)
 {
     int i, j;
@@ -70,6 +73,7 @@ int sort(fcfs arr[], int n)
     {
         for (j = i + 1; j < n; j++)
         {
+            //Sorting the processes according to their arrival time
             if (arr[i].arrival > arr[j].arrival)
             {
                 k = arr[i];
