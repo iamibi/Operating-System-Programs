@@ -14,11 +14,9 @@ typedef struct sjf
 
 void sort(sjf [], int);
 
-int n;
-
 int main()
 {
-    int i, j, TCT, count_process = 0, count = 0, minBurst, pos;
+    int n, i, j, TCT, count_process = 0, count = 0, minBurst, pos;
     float AvTAT = 0.0, AvWT = 0.0;
 
     printf ("Enter the number of processes: ");
