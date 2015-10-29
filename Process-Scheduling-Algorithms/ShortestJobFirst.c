@@ -1,5 +1,7 @@
 /*
  * Shortest Job First, Non-Preemptive type.
+ *
+ * Developed by Prakhar and Ibrahim.
 */
 #include <stdio.h>
 
