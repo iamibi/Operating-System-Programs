@@ -4,6 +4,8 @@
  * TCT -> Total Completion Time
  * TAT -> Turn Around Time
  * WT  -> Waiting Time
+ *
+ * Developed by Prakhar and Ibrahim.
 */
 #include <iostream>
 
