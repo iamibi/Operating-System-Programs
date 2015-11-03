@@ -28,7 +28,7 @@ def BinarySearch(L, e):
 
 #Main Fuction Body
 def main():
-    flag = 0
+    front = -1
     count = 0
     rear = -1
     arr = []            #List
@@ -47,6 +47,7 @@ def main():
         
         # Initially if the queue is empty
         if (rear == -1):
+            front += 1
             rear += 1
             arr.insert(rear, val)
             count = count + 1
@@ -67,16 +68,15 @@ def main():
             #if the queue is full then start from initial index
             if (count > n):
                 for j in arr:
-                    if (j == val):
-                        flag = 1
+                    if (k == front):
+                        arr.pop(front)
+                        if (front == n - 1):
+                            front = 0
+                        else:
+                            front += 1
+                        arr.insert(rear, val)
+                        pageFault = pageFault + 1
                         break
-                if (not flag):
-                    for j in arr:
-                        if (k == rear):
-                            arr.pop(rear)
-                            arr.insert(rear, val)
-                            pageFault = pageFault + 1
-                            break
                     k = k + 1
             else:
                 arr.insert(rear, val)
