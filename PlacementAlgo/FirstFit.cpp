@@ -1,28 +1,35 @@
+/*
+ * First Fit Page Placement Algorithm
+ *
+ * This program is dynamic implementation of first fit
+ *
+ * Developed by Ibrahim and Prakhar
+*/
 #include <iostream>
 
 using std::cin;
 using std::cout;
 
-typedef struct placement
+typedef struct frame
 {
-    int no;
-    int blockSize;
-}placement;
+    int no;                     //Frame number
+    int blockSize;              //Frame size
+}frame;
 
-typedef struct process
+typedef struct page
 {
-    int pro;
-    int no;
-    int blockno;
-}process;
+    int pro;                    //Page size
+    int no;                     //Page number
+    int blockno;                //Block number allocated to
+}page;
 
 int main()
 {
     int i, j, n, m;
     
-    cout << "Enter the total number of free blocks: ";
+    cout << "Enter the total number of free frames: ";
     cin >> n;
-    placement arr[n];
+    frame arr[n];
     
     for (i = 0; i < n; i++)
     {
@@ -30,33 +37,32 @@ int main()
         cout << "Enter the" << arr[i].no << " block size: ";
         cin >> arr[i].blockSize;
     }
-    cout << "Free Block list\nBlock No\tBlock Size\n";
+    cout << "Free Frame list\nBlock No\tBlock Size\n";
     for (i = 0; i < n; i++)
         cout << arr[i].no << "\t\t" << arr[i].blockSize << "\n";
         
-    cout << "Enter the number of process: ";
+    cout << "Enter the number of pages: ";
     cin >> m;
-    process pr[m];
+    page pr[m];
     
     for (i = 0; i < m; i++)
     {
         pr[i].no = i + 1;
-        cout << "Enter the process " << pr[i].no << " size: ";
+        cout << "Enter the page " << pr[i].no << " size: ";
         cin >> pr[i].pro;
     }
-    cout << "Processes available\nProcess No\tProcess Size\n";
+    cout << "Pages available\nPage No\tPage Size\n";
     for (i = 0; i < m; i++)
         cout << pr[i].no << "\t\t" << pr[i].pro << "\n";
 
     for (i = 0; i < m; i++)
-    {
         pr[i].blockno = -1;
-    }
     
     for (i = 0; i < m; i++)
     {
         for (j = 0; j < n; j++)
         {
+            //Check for the size of page with the available block size
             if (pr[i].pro <= arr[j].blockSize)
             {
                 arr[j].blockSize -= pr[i].pro;
@@ -65,10 +71,8 @@ int main()
             }
         }
     }
-    cout << "Process No\tBlock No\n";
+    cout << "Page No\tBlock No\n";
     for (i = 0; i < m; i++)
-    {
         cout << "\t" << pr[i].no << "-->\t " << pr[i].blockno << "\n";
-    }
     return 0;
 }
