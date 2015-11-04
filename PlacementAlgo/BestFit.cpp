@@ -23,7 +23,7 @@ typedef struct page
     int blockno;            //Which block the process gets allocated to
 }page;
 
-int sort (placement [], int);
+int sort (frame [], int);
 
 int main()
 {
