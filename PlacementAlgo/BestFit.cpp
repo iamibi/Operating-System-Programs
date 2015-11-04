@@ -36,10 +36,10 @@ int main()
     for (i = 0; i < n; i++)
     {
         arr[i].no = i + 1;
-        cout << "Enter the" << arr[i].no << " block size: ";
+        cout << "Enter the " << arr[i].no << " block size: ";
         cin >> arr[i].blockSize;
     }
-    cout << "Free Block list\nBlock No\tBlock Size\n";
+    cout << "Free Frames list\nBlock No\tBlock Size\n";
     for (i = 0; i < n; i++)
         cout << arr[i].no << "\t\t" << arr[i].blockSize << "\n";
         
@@ -54,7 +54,7 @@ int main()
         cout << "Enter the page " << pr[i].no << " size: ";
         cin >> pr[i].pro;
     }
-    cout << "Processes available\nProcess No\tProcess Size\n";
+    cout << "Pages available\nPage No\tPage Size\n";
     for (i = 0; i < m; i++)
         cout << pr[i].no << "\t\t" << pr[i].pro << "\n";
 
@@ -76,7 +76,7 @@ int main()
             }
         }
     }
-    cout << "Process No\tBlock No\n";
+    cout << "Page No\tBlock No\n";
     for (i = 0; i < m; i++)
         cout << "\t" << pr[i].no << "-->\t " << pr[i].blockno << "\n";
     return 0;
