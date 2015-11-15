@@ -9,7 +9,6 @@
 
 */
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 
 typedef struct resource
@@ -49,8 +48,8 @@ typedef struct process
 int p;
 available AVL;
 
-int calculate_data(process *);
-int print_data(process *);
+int calculate_data(process []);
+int print_data(process []);
 
 int main()
 {
@@ -60,53 +59,51 @@ int main()
 	scanf ("%d", &p);
 	process pro[p];
 
-    calculate_data(&pro);
-    print_data(&pro);
-
     for (i = 0; i < p; i++)
         pro[i].done = false;
 
+    calculate_data(pro);
+    print_data(pro);
+
     i = 0;
-    //TODO
+
+    //TODO: Repeat this loop until all the process gets their needed resources or break 
+    //if the process is never going to be in a safe state
     while (count_process < p)
     {
         flag = 0;
         i = count_process;
-        for (count = 0; count < p; count++)
+        if (!pro[i].done)
         {
-            if (pro[count].done == false)
+            for (j = 0; j < 3; j++)
+            {
+                if (pro[i].N.R[j].no > AVL.R[j].no)
+                {
+                    flag = 1;
+                    break;
+                }
+            }
+            if (!flag)
             {
                 for (j = 0; j < 3; j++)
                 {
-                    if (pro[i].N.R[j].no > AVL.R[j].no)
-                    {
-                        flag = 1;
-                        break;
-                    }
+                    AVL.R[j].no = pro[i].AL.R[j].no + AVL.R[j].no;
+                    pro[i].AL.R[j].no = 0;
                 }
 
-                if (!flag)
-                {
-                    for (j = 0; j < 3; j++)
-                    {
-                        AVL.R[j] = pro[i].AL.R[j].no + AVL.R[j].no;
-                        pro[i].AL.R[j].no = 0;
-                    }
-
-                    pro[i].done = true;
-                }
-                else
-                    pro[i].done = false;
-
+                pro[i].done = true;
             }
+            else
+                pro[i].done = false;
         }
         count_process++;
     }
+    print_data(pro);
     return 0;
 }
 
 //Calculate the AVAILABLE, Allocation and MAX
-int calculate_data(process* pr)
+int calculate_data(process pr[])
 {
     int i, j;
 	
@@ -130,18 +127,15 @@ int calculate_data(process* pr)
 		for (j = 0; j < 3; j++)
 			scanf ("%d", &pr[i].MAX.R[j].no);
 
-    printf ("Calculating Need, please wait...");
-    delay(1000);
     for (i = 0; i < p; i++)
         for (j = 0; j < 3; j++)
-            pr[i].N.R[j].no = pr[i].AL.R[j].no + pr[i].MAX.R[j].no;
+            pr[i].N.R[j].no = pr[i].MAX.R[j].no - pr[i].AL.R[j].no;
 
-    printf ("Done\n");
     return 0;
 }
 
 //Print all the data
-int print_data(process* pr)
+int print_data(process pr[])
 {
     int i, j;
 
@@ -162,6 +156,13 @@ int print_data(process* pr)
 			printf ("%2d ", pr[i].MAX.R[j].no);
 		printf ("\n");
 	}
+
+    printf ("PROCESS\t\tDONE?\n");
+    for (i = 0; i < p; i++)
+    {
+        printf ("P%d\t\t", pr[i].prc_no);
+        printf ("%s\n", pr[i].done ? "True" : "False");
+    }
 
 	printf ("Total Available Resource\n");
 	for (i = 0; i < 3; i++)
