@@ -1,41 +1,54 @@
 /*
-
-
-
-						Program is Incomplete. Check the TODO part.
-
-
-
-
+ * 
+ * BANKERS ALGORITHM through C
+ *
+ * Developed by Ibrahim
+ *
+ * 17/NOV/2015
+ *
+ * This is the bankers algorithm for calculating the safe sequence and thus prevention of deadlock.
+ * If, at all any safe sequence exist, the resources gets allocated to the complete cycle
+ * Else whole cycle of processes is made to wait until the available resources gets updated.
+ *
+ * I've made this program for only three resources of each, but anyone can change it to whichever size they want
+ * by just replacing the three with the size of their desire.
+ *
 */
+
 #include <stdio.h>
 #include <stdbool.h>
 
+//value of indivisual resource
 typedef struct resource
 {
 	int no;
 }resource;
 
+//Allocation matrix of resources
 typedef struct allocation
 {
 	resource R[3];
 }allocation;
 
+//Maximum allocation matrix
 typedef struct max
 {
 	resource R[3];
 }max;
 
+//Available resources
 typedef struct available
 {
 	resource R[3];
 }available;
 
+//Process need
 typedef struct need
 {
     resource R[3];
 }need;
 
+//Process
 typedef struct process
 {
 	int prc_no;
@@ -53,52 +66,76 @@ int print_data(process []);
 
 int main()
 {
-	int i, j, count_process = 0, count = 0, flag = 0, flag_p = 0;
+	int i, j, k = 0, count_process = 0, update = 1, flag = 0, flag_p = 0;
 	
 	printf ("Enter the number of process available: ");
 	scanf ("%d", &p);
 	process pro[p];
+    int safe_sequence[p];
 
+    //Initially, no process has resources
     for (i = 0; i < p; i++)
         pro[i].done = false;
 
+    //Input the process data and resource allocation to the processes
     calculate_data(pro);
     print_data(pro);
 
     i = 0;
 
-    //TODO: Repeat this loop until all the process gets their needed resources or break 
-    //if the process is never going to be in a safe state
-    while (count_process < p)
+    //Repeat until there is change in Available resources
+    while (update)
     {
-        flag = 0;
-        i = count_process;
-        if (!pro[i].done)
+        update = 0;
+        count_process = 0;
+        while (count_process < p)
         {
-            for (j = 0; j < 3; j++)
-            {
-                if (pro[i].N.R[j].no > AVL.R[j].no)
-                {
-                    flag = 1;
-                    break;
-                }
-            }
-            if (!flag)
+            flag = 0;
+            i = count_process;
+            
+            //Is the process done ? If not then check whether the available resources can be allocated
+            //to that process
+            if (!pro[i].done)
             {
                 for (j = 0; j < 3; j++)
                 {
-                    AVL.R[j].no = pro[i].AL.R[j].no + AVL.R[j].no;
-                    pro[i].AL.R[j].no = 0;
+                    if (pro[i].N.R[j].no > AVL.R[j].no)
+                    {
+                        flag = 1;
+                        break;
+                    }
                 }
-
-                pro[i].done = true;
+                if (!flag)
+                {
+                    for (j = 0; j < 3; j++)
+                    {
+                        AVL.R[j].no = pro[i].AL.R[j].no + AVL.R[j].no;
+                        pro[i].AL.R[j].no = 0;
+                    }
+                    pro[i].done = true;
+                    safe_sequence[k] = pro[i].prc_no;
+                    k++;
+                    update = 1;
+                }
+                else
+                    pro[i].done = false;
             }
-            else
-                pro[i].done = false;
+            count_process++;
         }
-        count_process++;
     }
-    print_data(pro);
+
+    for (i = 0; i < p; i++)
+		if (pro[i].done == false)
+		{
+			printf ("There is a process that doesn't have the required resources. So no safe sequence exist\n");
+			return 0;
+		}
+
+    printf ("\nThe Safe Sequence is");
+    for (i = 0; i < k; i++)
+        printf (" -> P%d", safe_sequence[i]);
+
+    printf ("\n");
     return 0;
 }
 
